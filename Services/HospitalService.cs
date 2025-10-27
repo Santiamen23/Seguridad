@@ -40,6 +40,11 @@ namespace Security.Services
             return await _repo.GetOne(id);
         }
 
+        public async Task<IEnumerable<Hospital>> GetType1And3()
+        {
+            return await _repo.GetType1And3();
+        }
+
         public async Task<Hospital> Update(Guid id, UpdateHospitalDto dto)
         {
             var hospitalFromDb = await _repo.GetOne(id);

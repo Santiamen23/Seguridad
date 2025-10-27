@@ -11,5 +11,7 @@ namespace Security.Repositories
         Task<bool> Delete(Guid id);
 
         Task<Hospital> Update(Hospital hospital);
+
+        Task<IEnumerable<Hospital>> GetType1And3();
     }
 }

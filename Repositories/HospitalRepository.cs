@@ -4,6 +4,7 @@ using Security.Models;
 
 namespace Security.Repositories
 {
+
     public class HospitalRepository : IHospitalRepository
     {
         private readonly AppDbContext _db;
@@ -35,6 +36,11 @@ namespace Security.Repositories
         public async Task<Hospital?> GetOne(Guid id)
         {
             return await _db.Hospitals.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<Hospital>> GetType1And3()
+        {
+            return await _db.Hospitals.Where(h => h.Type == 1 || h.Type == 3).ToListAsync();
         }
 
         public async Task<Hospital> Update(Hospital hospital)
