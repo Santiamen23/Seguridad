@@ -4,6 +4,7 @@ using Security.Repositories;
 
 namespace Security.Services
 {
+
     public class HospitalService : IHospitalService
     {
         private readonly IHospitalRepository _repo;
@@ -24,6 +25,11 @@ namespace Security.Services
             return hospital;
         }
 
+        public async Task<bool> DeleteHospital(Guid id)
+        {
+            return await _repo.Delete(id);
+        }
+
         public async Task<IEnumerable<Hospital>> GetAll()
         {
             return await _repo.GetAll();
@@ -32,6 +38,19 @@ namespace Security.Services
         public async Task<Hospital> GetOne(Guid id)
         {
             return await _repo.GetOne(id);
+        }
+
+        public async Task<Hospital> Update(Guid id, UpdateHospitalDto dto)
+        {
+            var hospitalFromDb = await _repo.GetOne(id);
+
+            if (hospitalFromDb == null)return null;            
+            hospitalFromDb.Name = dto.Name;
+            hospitalFromDb.Address = dto.Address;
+            hospitalFromDb.Type = dto.Type;
+            await _repo.Update(hospitalFromDb);
+            return hospitalFromDb;
+
         }
     }
 }

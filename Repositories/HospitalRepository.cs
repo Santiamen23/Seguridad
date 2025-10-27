@@ -18,6 +18,15 @@ namespace Security.Repositories
             await _db.SaveChangesAsync();
         }
 
+        public async Task<bool> Delete(Guid id)
+        {
+            var hospital = await _db.Hospitals.FirstOrDefaultAsync(x => x.Id == id);
+            if (hospital is null) return false;
+            _db.Hospitals.Remove(hospital);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<IEnumerable<Hospital>> GetAll()
         {
             return await _db.Hospitals.ToListAsync();
@@ -26,6 +35,15 @@ namespace Security.Repositories
         public async Task<Hospital?> GetOne(Guid id)
         {
             return await _db.Hospitals.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Hospital> Update(Hospital hospital)
+        {
+            var updatedHospital =await _db.Hospitals.FirstOrDefaultAsync(h=>h.Id==hospital.Id);
+            if(updatedHospital is null) return null;
+            _db.Update(hospital);
+            await _db.SaveChangesAsync();
+            return hospital;
         }
     }
 }

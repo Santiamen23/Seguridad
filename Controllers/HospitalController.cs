@@ -37,5 +37,25 @@ namespace Security.Controllers
             var hospital = await _service.CreateHospital(dto);
             return CreatedAtAction(nameof(GetOne), new { id = hospital.Id }, hospital);
         }
+
+
+
+        [HttpPut("{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateHospital(Guid id, [FromBody] UpdateHospitalDto dto)
+        {
+            var update = await _service.Update(id, dto);
+            return update is null ?NotFound():Ok(update);
+        }
+
+
+        [HttpDelete("{id:guid}")]
+        [Authorize(Policy="AdminOnly")]
+
+        public async Task<IActionResult> DeleteHospital(Guid id)
+        {
+            var deleted= await _service.DeleteHospital(id);
+            return deleted ?NoContent() : NotFound();
+        }
     }
 }
